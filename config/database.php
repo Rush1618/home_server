@@ -12,8 +12,6 @@ define('DB_NAME', 'admin_platform');
 function getDBConnection()
 {
     try {
-        // In Termux, if TCP fails, you might need unix_socket attribute instead:
-        // $dsn = "mysql:unix_socket=/data/data/com.termux/files/usr/var/run/mysqld.sock;dbname=" . DB_NAME;
         $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
         $pdo = new PDO($dsn, DB_USER, DB_PASS);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -21,6 +19,42 @@ function getDBConnection()
         return $pdo;
     }
     catch (PDOException $e) {
-        throw new Exception("Database Connection Failed: " . $e->getMessage());
+        // If it's just "Unknown database", we can handle it in index.php
+        throw $e;
+    }
+}
+
+/**
+ * Connects to MySQL without selecting a database
+ */
+function getRawConnection()
+{
+    $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";charset=utf8mb4";
+    $pdo = new PDO($dsn, DB_USER, DB_PASS);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $pdo;
+}
+
+/**
+ * Creates the database and runs schema.sql
+ */
+function initializeDatabase()
+{
+    $pdo = getRawConnection();
+
+    // Run schema.sql
+    $schemaPath = __DIR__ . '/../sql/schema.sql';
+    if (file_exists($schemaPath)) {
+        $sql = file_get_contents($schemaPath);
+
+        // Simple split by semicolon. 
+        // Note: This won't work if semicolons are inside strings, but for our schema.sql it's fine.
+        $statements = array_filter(array_map('trim', explode(';', $sql)));
+
+        foreach ($statements as $stmt) {
+            if (!empty($stmt)) {
+                $pdo->exec($stmt);
+            }
+        }
     }
 }

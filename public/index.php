@@ -2,7 +2,19 @@
 require_once __DIR__ . '/../includes/auth.php';
 
 try {
-    $pdo = getDBConnection();
+    try {
+        $pdo = getDBConnection();
+    }
+    catch (PDOException $e) {
+        // Error code 1049 is "Unknown database"
+        if ($e->getCode() == 1049 || strpos($e->getMessage(), 'Unknown database') !== false) {
+            initializeDatabase();
+            $pdo = getDBConnection();
+        }
+        else {
+            throw $e;
+        }
+    }
 
     // Check if any user exists
     $stmt = $pdo->query("SELECT COUNT(*) FROM users");
