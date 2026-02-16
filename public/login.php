@@ -8,12 +8,17 @@ if (is_logged_in()) {
 }
 
 $error = '';
-if (login($username, $password)) {
-    header('Location: /dashboard.php');
-    exit;
-}
-else {
-    $error = 'Invalid username or password';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if (login($username, $password)) {
+        header('Location: /dashboard.php');
+        exit;
+    }
+    else {
+        $error = 'Invalid username or password';
+    }
 }
 ?>
 <!DOCTYPE html>
