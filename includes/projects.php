@@ -229,3 +229,29 @@ function reload_nginx()
     // error_log("Nginx reload failed: " . implode("\n", $output));
     }
 }
+
+function get_project_stats()
+{
+    $pdo = getDBConnection();
+
+    $stats = [
+        'total' => 0,
+        'active' => 0,
+        'disabled' => 0,
+        'latest' => []
+    ];
+
+    $stmt = $pdo->query("SELECT status, COUNT(*) as count FROM projects GROUP BY status");
+    foreach ($stmt->fetchAll() as $row) {
+        if ($row['status'] === 'active')
+            $stats['active'] = (int)$row['count'];
+        if ($row['status'] === 'disabled')
+            $stats['disabled'] = (int)$row['count'];
+    }
+    $stats['total'] = $stats['active'] + $stats['disabled'];
+
+    $stmt = $pdo->query("SELECT name, slug, created_at FROM projects ORDER BY created_at DESC LIMIT 5");
+    $stats['latest'] = $stmt->fetchAll();
+
+    return $stats;
+}

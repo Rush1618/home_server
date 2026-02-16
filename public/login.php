@@ -27,36 +27,106 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login</title>
+    <title>Admin Login - Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; margin: 0; }
-        .login-box { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 300px; }
-        h2 { margin-top: 0; text-align: center; color: #333; }
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 0.5rem; color: #666; }
-        input { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 0.75rem; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; }
-        button:hover { background-color: #0056b3; }
-        .error { color: #dc3545; text-align: center; margin-bottom: 1rem; font-size: 0.9rem; }
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-main: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background-color: var(--bg-main); 
+            margin: 0; 
+            color: var(--text-main);
+        }
+
+        .login-box { 
+            background: var(--card-bg); 
+            padding: 2.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            width: 100%;
+            max-width: 380px; 
+            border: 1px solid var(--border);
+        }
+
+        .login-header { text-align: center; margin-bottom: 2rem; }
+        .login-header h2 { margin: 0; font-size: 1.5rem; font-weight: 700; color: var(--text-main); }
+        .login-header p { margin: 0.5rem 0 0; font-size: 0.875rem; color: var(--text-muted); }
+
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #374151; font-weight: 500; font-size: 0.875rem; }
+        input { 
+            width: 100%; 
+            padding: 0.75rem; 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+        
+        button { 
+            width: 100%; 
+            padding: 0.875rem; 
+            background-color: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 1rem; 
+            font-weight: 600;
+            transition: background 0.2s;
+            margin-top: 1rem;
+        }
+        button:hover { background-color: var(--primary-hover); }
+        
+        .error { 
+            background-color: #fef2f2; 
+            color: #991b1b; 
+            padding: 0.75rem; 
+            border-radius: 8px; 
+            border: 1px solid #fee2e2;
+            text-align: center; 
+            margin-bottom: 1.5rem; 
+            font-size: 0.875rem; 
+        }
     </style>
 </head>
 <body>
     <div class="login-box">
-        <h2>Admin Login</h2>
+        <div class="login-header">
+            <h2>Admin Login</h2>
+            <p>Sign in to manage your projects</p>
+        </div>
+
         <?php if ($error): ?>
             <div class="error"><?php echo htmlspecialchars($error); ?></div>
         <?php
 endif; ?>
+
         <form method="POST">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required autofocus>
+                <input type="text" id="username" name="username" required autofocus placeholder="admin">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" required placeholder="••••••••">
             </div>
-            <button type="submit">Login</button>
+            <button type="submit">Sign In</button>
         </form>
     </div>
 </body>

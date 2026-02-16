@@ -50,3 +50,12 @@ function logout()
     }
     session_destroy();
 }
+
+// Update password
+function update_password($user_id, $new_password)
+{
+    $pdo = getDBConnection();
+    $hash = password_hash($new_password, PASSWORD_DEFAULT);
+    $stmt = $pdo->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
+    return $stmt->execute([$hash, $user_id]);
+}
