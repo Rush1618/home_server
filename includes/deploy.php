@@ -84,7 +84,7 @@ function deploy_project($project_id)
         // 5.5 Mount Storage (Phase 4)
         if ($project['storage_enabled']) {
             $log("Mounting persistent storage...");
-            $persistentPath = $project['storage_path']; // /mnt/storage/platform/storage/slug
+            $persistentPath = $project['storage_path'];
 
             // Link runtime/storage -> /mnt/storage/platform/storage/slug
             $linkPath = $runtimeDir . '/storage';

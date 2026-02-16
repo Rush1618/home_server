@@ -180,7 +180,7 @@ function toggle_storage_enabled($project_id, $enabled)
         return false;
     $slug = $proj['slug'];
 
-    $storagePath = STORAGE_ROOT . '/' . $slug;
+    $storagePath = PROJECT_STORAGE_ROOT . '/' . $slug;
     $dbPath = $storagePath;
 
     if ($enabled) {
