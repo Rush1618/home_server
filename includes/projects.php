@@ -43,12 +43,16 @@ function create_project($name, $slug)
     }
 
     // 2. Create Project Folder
+    if (!is_dir(PROJECTS_ROOT)) {
+        if (!mkdir(PROJECTS_ROOT, 0755, true)) {
+            throw new Exception("Failed to create PROJECTS_ROOT: " . PROJECTS_ROOT);
+        }
+    }
+
     $projectPath = PROJECTS_ROOT . '/' . $slug;
     if (!file_exists($projectPath)) {
         if (!mkdir($projectPath, 0755, true)) {
-            // Rollback DB? For simplicity in this phase, we might leave the record or need manual cleanup.
-            // Ideally: delete the DB row.
-            throw new Exception("Failed to create project directory.");
+            throw new Exception("Failed to create project directory: " . $projectPath);
         }
         // Create a default index.html so it's not empty
         file_put_contents($projectPath . '/index.html', "<h1>$name</h1><p>Project is ready.</p>");

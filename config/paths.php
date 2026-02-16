@@ -1,14 +1,15 @@
 <?php
 // Path Configuration
 
-// Where project runtime folders live
-define('PROJECTS_ROOT', '/mnt/storage/platform/projects');
+// Where all persistent data lives
+define('STORAGE_ROOT', '/srv/platform/storage');
 
-// Where Nginx configs live
-define('NGINX_CONFIG_DIR', '/mnt/storage/platform/nginx');
+// Sub-folders for specific data types
+define('PROJECTS_ROOT', STORAGE_ROOT . '/projects');
+define('LOGS_DIR', STORAGE_ROOT . '/admin/logs');
+define('UPLOADS_ROOT', STORAGE_ROOT . '/admin/uploads');
+define('IMAGES_ROOT', STORAGE_ROOT . '/admin/images');
+define('ENV_ROOT', STORAGE_ROOT . '/admin/env');
 
-// Where access logs live
-define('LOGS_DIR', '/mnt/storage/platform/logs');
-
-// Where persistent storage lives
-define('STORAGE_ROOT', '/mnt/storage/platform/storage');
+// Nginx configuration (usually /etc/nginx/sites-available in Ubuntu)
+define('NGINX_CONFIG_DIR', '/etc/nginx/sites-available');
